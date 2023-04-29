@@ -1,12 +1,14 @@
-use serde::{Deserialize};
 use std::fs::File;
 use std::io::Read;
+
+use serde::{Deserialize};
+use serde_json;
 
 use nalgebra::{Translation3, Rotation3, Quaternion};
 
 #[derive(Debug, Deserialize)]
 #[allow(dead_code)]
-struct DaviTreeNode {
+pub struct DaviTreeNode {
   name: String,
   id: i32,
   #[serde(default = "default_translation3")]
@@ -25,7 +27,7 @@ fn default_rotation3() -> Rotation3<f64> {
   Rotation3::identity()
 }
 
-fn read_json_file(path: &str) -> Result<DaviTreeNode, serde_json::Error> {
+pub fn read_json_file(path: &str) -> Result<DaviTreeNode, serde_json::Error> {
   let mut file = File::open(path).expect("Unable to open file");
   let mut contents = String::new();
   file.read_to_string(&mut contents).expect("Unable to read the file");
@@ -34,11 +36,11 @@ fn read_json_file(path: &str) -> Result<DaviTreeNode, serde_json::Error> {
   Ok(tree)
 }
 
-// メイン処理
-fn main() {
-    let path = "./ext/sample.json";
-    match read_json_file(path) {
-        Ok(tree) => println!("Parsed JSON tree: {:?}", tree),
-        Err(e) => eprintln!("Failed to parse JSON: {}", e),
-    }
+#[test]
+fn test_read_json_file(){
+  let path = "./ext/sample.json";
+  match read_json_file(path) {
+      Ok(tree) => println!("Parsed JSON tree: {:?}", tree),
+      Err(e) => eprintln!("Failed to parse JSON: {}", e),
+  }
 }
