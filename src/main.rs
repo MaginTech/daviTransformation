@@ -1,9 +1,8 @@
-use serde:: Deserialize;
+use serde::{Deserialize};
 use std::fs::File;
 use std::io::Read;
 
-use nalgebra::Translation3;
-use nalgebra::Rotation3;
+use nalgebra::{Vector3, Translation3, Rotation3, Quaternion};
 
 
 #[derive(Debug, Deserialize)]
@@ -11,11 +10,26 @@ use nalgebra::Rotation3;
 struct DaviTreeNode {
   name: String,
   id: i32,
+  #[serde(default = "default_translation3")]
   position: Translation3<f64>,
+  #[serde(default = "default_rotation3")]
   rotation: Rotation3<f64>,
+  #[serde(default = "default_quaternion")]
+  quaternion: Quaternion<f64>,
   children: Option<Vec<DaviTreeNode>>
 }
 
+fn default_translation3() -> Translation3<f64> {
+  Translation3::identity()
+}
+
+fn default_rotation3() -> Rotation3<f64> {
+  Rotation3::identity()
+}
+
+fn default_quaternion() -> Quaternion<f64> {
+  Quaternion::from_parts(1.0, Vector3::new(0.0, 0.0, 0.0))
+}
 
 fn read_json_file(path: &str) -> Result<DaviTreeNode, serde_json::Error> {
     let mut file = File::open(path).expect("Unable to open file");
