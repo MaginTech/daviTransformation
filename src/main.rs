@@ -2,7 +2,7 @@ use serde::{Deserialize};
 use std::fs::File;
 use std::io::Read;
 
-use nalgebra::{Vector3, Translation3, Rotation3, Quaternion};
+use nalgebra::{Translation3, Rotation3, Quaternion};
 
 #[derive(Debug, Deserialize)]
 #[allow(dead_code)]
