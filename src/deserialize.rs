@@ -1,32 +1,10 @@
 use std::fs::File;
 use std::io::Read;
-
-use serde::{Deserialize};
 use serde_json;
 
-use nalgebra::{Translation3, Rotation3, Quaternion};
+use crate::davi_tree::*;
 
-#[derive(Debug, Deserialize)]
 #[allow(dead_code)]
-pub struct DaviTreeNode {
-  name: String,
-  id: i32,
-  #[serde(default = "default_translation3")]
-  position: Translation3<f64>,
-  #[serde(default = "default_rotation3")]
-  rotation: Rotation3<f64>,
-  quaternion: Option<Quaternion<f64>>,
-  children: Option<Vec<DaviTreeNode>>
-}
-
-fn default_translation3() -> Translation3<f64> {
-  Translation3::identity()
-}
-
-fn default_rotation3() -> Rotation3<f64> {
-  Rotation3::identity()
-}
-
 pub fn read_json_file(path: &str) -> Result<DaviTreeNode, serde_json::Error> {
   let mut file = File::open(path).expect("Unable to open file");
   let mut contents = String::new();
@@ -55,7 +33,6 @@ mod tests {
     assert_eq!(parsed_node.id, 1);
     assert_eq!(parsed_node.position, default_translation3());
     assert_eq!(parsed_node.rotation, default_rotation3());
-    assert!(parsed_node.quaternion.is_none());
     assert!(parsed_node.children.unwrap().is_empty());
   }
 
@@ -69,7 +46,6 @@ mod tests {
         assert_eq!(tree.id, 1);
         assert_eq!(tree.position, default_translation3());
         assert_eq!(tree.rotation, default_rotation3());
-        assert!(tree.quaternion.is_none());
         assert!(tree.children.unwrap().is_empty());
       }
       Err(e) => panic!("Failed to parse JSON: {}", e),
