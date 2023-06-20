@@ -19,6 +19,8 @@ pub struct DaviTreeNode {
   #[serde(default)]
   pub rotation: Rotation3<f64>,
 
-pub fn default_rotation3() -> Rotation3<f64> {
-  Rotation3::identity()
+  #[serde(default, skip_deserializing)]
+  pub vel_twist: Vector6<f64>,
+  #[serde(default, skip_deserializing)]
+  pub acc_twist: Vector6<f64>,
 }
