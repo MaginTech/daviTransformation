@@ -1,4 +1,4 @@
-use nalgebra::{Translation3, Rotation3};
+use nalgebra::{Point3, Rotation3, Vector6};
 use serde::{Deserialize};
 
 #[derive(Debug)]
@@ -12,17 +12,12 @@ pub struct DaviTrans {
 pub struct DaviTreeNode {
   pub name: String,
   pub id: i32,
-  #[serde(default = "default_translation3")]
-  pub position: Translation3<f64>,
-  #[serde(default = "default_rotation3")]
-  pub rotation: Rotation3<f64>,
-  pub children: Option<Vec<DaviTreeNode>>
-  // #[serde(skip_deserializing)]
-}
+  pub children: Option<Vec<DaviTreeNode>>,
 
-pub fn default_translation3() -> Translation3<f64> {
-  Translation3::identity()
-}
+  #[serde(default)]
+  pub position: Point3<f64>,
+  #[serde(default)]
+  pub rotation: Rotation3<f64>,
 
 pub fn default_rotation3() -> Rotation3<f64> {
   Rotation3::identity()

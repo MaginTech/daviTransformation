@@ -18,6 +18,7 @@ pub fn read_json_file(path: &str) -> Result<DaviTreeNode, serde_json::Error> {
 mod tests {
   use super::*;
   use serde_json::json;
+  use nalgebra::{Point3, Rotation3};
 
   #[test]
   fn test_davi_tree_node_default_values() {
@@ -31,8 +32,8 @@ mod tests {
 
     assert_eq!(parsed_node.name, "node");
     assert_eq!(parsed_node.id, 1);
-    assert_eq!(parsed_node.position, default_translation3());
-    assert_eq!(parsed_node.rotation, default_rotation3());
+    assert_eq!(parsed_node.position, Point3::<f64>::origin());
+    assert_eq!(parsed_node.rotation, Rotation3::<f64>::identity());
     assert!(parsed_node.children.unwrap().is_empty());
   }
 
@@ -44,8 +45,8 @@ mod tests {
       Ok(tree) => {
         assert_eq!(tree.name, "node");
         assert_eq!(tree.id, 1);
-        assert_eq!(tree.position, default_translation3());
-        assert_eq!(tree.rotation, default_rotation3());
+        assert_eq!(tree.position, Point3::<f64>::origin());
+        assert_eq!(tree.rotation, Rotation3::<f64>::identity());
         assert!(tree.children.unwrap().is_empty());
       }
       Err(e) => panic!("Failed to parse JSON: {}", e),
