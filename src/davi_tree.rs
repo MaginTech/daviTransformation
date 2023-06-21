@@ -47,6 +47,18 @@ mod tests {
   use nalgebra::{Point3, Rotation3, Vector6};
 
   #[test]
+  fn test_new() {
+    let d = DaviTreeNode::new("test", 0);
+
+    assert_eq!(d.name, "test");
+    assert_eq!(d.id, 0);
+    assert!(d.children.unwrap().is_empty());
+    assert_eq!(d.position, Point3::<f64>::origin());
+    assert_eq!(d.rotation, Rotation3::<f64>::identity());
+    assert_eq!(d.vel_twist, Vector6::<f64>::zeros());
+    assert_eq!(d.acc_twist, Vector6::<f64>::zeros());
+  }
+
   #[test]
   fn test_add_child() {
     let mut d = DaviTreeNode::new("test", 0);
