@@ -24,3 +24,18 @@ pub struct DaviTreeNode {
   #[serde(default, skip_deserializing)]
   pub acc_twist: Vector6<f64>,
 }
+
+impl DaviTreeNode {
+  #[allow(dead_code)]
+  pub fn new(name: &str, id: i32) -> DaviTreeNode {
+    DaviTreeNode {
+      name: name.to_string(),
+      id,
+      children: Some(Vec::new()),
+      position: Point3::<f64>::origin(),
+      rotation: Rotation3::<f64>::identity(),
+      vel_twist: Vector6::<f64>::zeros(),
+      acc_twist: Vector6::<f64>::zeros()
+    }
+  }
+}
