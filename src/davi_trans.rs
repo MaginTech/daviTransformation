@@ -1,4 +1,4 @@
-use nalgebra::{Position3, Rotation3};
+use crate::davi_tree::*;
 
 #[derive(Debug)]
 #[allow(dead_code)]
@@ -6,6 +6,7 @@ pub struct DaviTrans {
   tree: DaviTreeNode
 }
 
+#[allow(dead_code)]
 impl DaviTrans {
   pub fn new(tree: DaviTreeNode) -> Self {
     DaviTrans { tree }
@@ -44,7 +45,8 @@ impl DaviTrans {
 mod tests {
   use super::*;
   #[test]
-  fn test_regist_node() {
+  fn test_new() {
+    let _davi = DaviTrans::new(DaviTreeNode::new("test", 0));
   }
 
   #[test]
