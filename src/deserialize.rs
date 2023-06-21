@@ -21,23 +21,6 @@ mod tests {
   use nalgebra::{Point3, Rotation3};
 
   #[test]
-  fn test_davi_tree_node_default_values() {
-    let sample_json = json!({
-      "name": "node",
-      "id": 1,
-      "children": []
-    });
-
-    let parsed_node: DaviTreeNode = serde_json::from_value(sample_json).unwrap();
-
-    assert_eq!(parsed_node.name, "node");
-    assert_eq!(parsed_node.id, 1);
-    assert_eq!(parsed_node.position, Point3::<f64>::origin());
-    assert_eq!(parsed_node.rotation, Rotation3::<f64>::identity());
-    assert!(parsed_node.children.unwrap().is_empty());
-  }
-
-  #[test]
   fn test_read_json_file() {
     let test_file_path = "./test_data/sample.json";
 

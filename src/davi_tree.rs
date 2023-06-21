@@ -39,3 +39,22 @@ impl DaviTreeNode {
     }
   }
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+  use nalgebra::{Point3, Rotation3, Vector6};
+
+  #[test]
+  fn test_davi_tree_node_new() {
+    let davi_node = DaviTreeNode::new("test", 0);
+
+    assert_eq!(davi_node.name, "test");
+    assert_eq!(davi_node.id, 0);
+    assert!(davi_node.children.unwrap().is_empty());
+    assert_eq!(davi_node.position, Point3::<f64>::origin());
+    assert_eq!(davi_node.rotation, Rotation3::<f64>::identity());
+    assert_eq!(davi_node.vel_twist, Vector6::<f64>::zeros());
+    assert_eq!(davi_node.acc_twist, Vector6::<f64>::zeros());
+  }
+}
