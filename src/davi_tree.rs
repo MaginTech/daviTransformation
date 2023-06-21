@@ -1,12 +1,6 @@
 use nalgebra::{Point3, Rotation3, Vector6};
 use serde::{Deserialize};
 
-#[derive(Debug)]
-#[allow(dead_code)]
-pub struct DaviTrans {
-  root: DaviTreeNode
-}
-
 #[derive(Debug, Deserialize)]
 #[allow(dead_code)]
 pub struct DaviTreeNode {
