@@ -42,7 +42,7 @@ impl DaviTrans {
 
 #[cfg(test)]
 mod tests {
-
+  use super::*;
   #[test]
   fn test_regist_node() {
   }
