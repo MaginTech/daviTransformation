@@ -17,7 +17,6 @@ pub fn read_json_file(path: &str) -> Result<DaviTreeNode, serde_json::Error> {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use serde_json::json;
   use nalgebra::{Point3, Rotation3};
 
   #[test]
