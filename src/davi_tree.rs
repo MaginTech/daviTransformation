@@ -58,28 +58,45 @@ impl DaviTreeNode {
         }
       }
 
-      None
-  }
+  // #[allow(dead_code)]
+  // pub fn search_by_id(&self, id: i32) -> Option<&DaviTreeNode> {
+  //     let mut queue = VecDeque::new();
+  //     queue.push_back(self);
 
-  #[allow(dead_code)]
-  pub fn search_by_name(&self, name: &str) -> Option<&DaviTreeNode> {
-    let mut queue = VecDeque::new();
-    queue.push_back(self);
+  //     while let Some(current) = queue.pop_front() {
+  //       if current.id == id {
+  //         return Some(current);
+  //       }
 
-    while let Some(current) = queue.pop_front() {
-      if current.name == name {
-        return Some(current);
-      }
+  //       if let Some(children) = &current.children {
+  //         for child in children {
+  //           queue.push_back(child);
+  //         }
+  //       }
+  //     }
 
-      if let Some(children) = &current.children {
-        for child in children {
-          queue.push_back(child);
-        }
-      }
-    }
+  //     None
+  // }
 
-    None
-  }
+  // #[allow(dead_code)]
+  // pub fn search_by_name(&self, name: &str) -> Option<&DaviTreeNode> {
+  //   let mut queue = VecDeque::new();
+  //   queue.push_back(self);
+
+  //   while let Some(current) = queue.pop_front() {
+  //     if current.name == name {
+  //       return Some(current);
+  //     }
+
+  //     if let Some(children) = &current.children {
+  //       for child in children {
+  //         queue.push_back(child);
+  //       }
+  //     }
+  //   }
+
+  //   None
+  // }
 }
 
 #[cfg(test)]
@@ -119,35 +136,35 @@ mod tests {
     }
   }
 
-  #[test]
-  fn test_search_by_id() {
-    let mut d = DaviTreeNode::new("test", 0);
-    let c = DaviTreeNode::new("child", 1);
-    d.add_child(c);
+  // #[test]
+  // fn test_search_by_id() {
+  //   let mut d = DaviTreeNode::new("test", 0);
+  //   let c = DaviTreeNode::new("child", 1);
+  //   d.add_child(c);
 
-    match d.search_by_id(1) {
-      Some(node) => {
-        assert_eq!(node.name, "child");
-        assert_eq!(node.id, 1);
-      }
-      None => {
-      }
-    }
-  }
+  //   match d.search_by_id(1) {
+  //     Some(node) => {
+  //       assert_eq!(node.name, "child");
+  //       assert_eq!(node.id, 1);
+  //     }
+  //     None => {
+  //     }
+  //   }
+  // }
 
-  #[test]
-  fn test_search_by_name() {
-    let mut d = DaviTreeNode::new("test", 0);
-    let c = DaviTreeNode::new("child", 1);
-    d.add_child(c);
+  // #[test]
+  // fn test_search_by_name() {
+  //   let mut d = DaviTreeNode::new("test", 0);
+  //   let c = DaviTreeNode::new("child", 1);
+  //   d.add_child(c);
 
-    match d.search_by_name("child") {
-      Some(node) => {
-        assert_eq!(node.name, "child");
-        assert_eq!(node.id, 1);
-      }
-      None => {
-      }
-    }
-  }
+  //   match d.search_by_name("child") {
+  //     Some(node) => {
+  //       assert_eq!(node.name, "child");
+  //       assert_eq!(node.id, 1);
+  //     }
+  //     None => {
+  //     }
+  //   }
+  // }
 }
