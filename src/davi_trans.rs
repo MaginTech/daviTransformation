@@ -1,17 +1,19 @@
 // use nalgebra::{Point3, Rotation3};
+use std::cell::RefCell;
+use std::rc::Rc;
 
 use crate::davi_tree::*;
 
 #[derive(Debug)]
 #[allow(dead_code)]
 pub struct DaviTrans {
-  tree: DaviTreeNode
+  tree: Option<Rc<RefCell<DaviTreeNode>>>
 }
 
 #[allow(dead_code)]
 impl DaviTrans {
-  pub fn new(tree: DaviTreeNode) -> Self {
-    DaviTrans { tree }
+  pub fn new(tree: Rc<RefCell<DaviTreeNode>>) -> Self {
+    DaviTrans { tree : Some(tree), }
   }
 
   // pub fn regist_node(&self, node: DaviTreeNode, parent_id: i32) {

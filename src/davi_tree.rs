@@ -1,62 +1,48 @@
+// use std::collections::VecDeque;
+use std::cell::RefCell;
+use std::rc::Rc;
 use nalgebra::{Point3, Rotation3, Vector6};
-use std::collections::VecDeque;
-use serde::{Deserialize};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug)]
 #[allow(dead_code)]
 pub struct DaviTreeNode {
   pub name: String,
   pub id: i32,
-  pub children: Option<Vec<DaviTreeNode>>,
+  pub children: Option<Vec<Rc<RefCell<DaviTreeNode>>>>,
 
-  #[serde(default)]
   pub position: Point3<f64>,
-  #[serde(default)]
   pub rotation: Rotation3<f64>,
 
-  #[serde(default, skip_deserializing)]
   pub vel_twist: Vector6<f64>,
-  #[serde(default, skip_deserializing)]
   pub acc_twist: Vector6<f64>,
 }
 
 impl DaviTreeNode {
   #[allow(dead_code)]
-  pub fn new(name: &str, id: i32) -> DaviTreeNode {
-    DaviTreeNode {
+  pub fn new(name: &str, id: i32) -> Rc<RefCell<Self>> {
+    Rc::new(RefCell::new(DaviTreeNode {
       name: name.to_string(),
       id,
-      children: Some(Vec::new()),
+      children: None,
       position: Point3::<f64>::origin(),
       rotation: Rotation3::<f64>::identity(),
       vel_twist: Vector6::<f64>::zeros(),
       acc_twist: Vector6::<f64>::zeros()
-    }
+    }))
   }
 
   #[allow(dead_code)]
-  pub fn add_child(&mut self, child: DaviTreeNode) {
-    if let Some(children) = &mut self.children {
-      children.push(child);
-    }
-  }
-
-  #[allow(dead_code)]
-  pub fn search_by_id(&self, id: i32) -> Option<&DaviTreeNode> {
-      let mut queue = VecDeque::new();
-      queue.push_back(self);
-
-      while let Some(current) = queue.pop_front() {
-        if current.id == id {
-          return Some(current);
-        }
-
-        if let Some(children) = &current.children {
-          for child in children {
-            queue.push_back(child);
-          }
-        }
+  fn add_child(&mut self, name: &str, id: i32) {
+    let new_child = DaviTreeNode::new(name, id);
+    match &mut self.children {
+      Some(children) => {
+        children.push(new_child);
       }
+      None => {
+        self.children = Some(vec![new_child]);
+      }
+    }
+  }
 
   // #[allow(dead_code)]
   // pub fn search_by_id(&self, id: i32) -> Option<&DaviTreeNode> {
@@ -108,26 +94,26 @@ mod tests {
   fn test_new() {
     let d = DaviTreeNode::new("test", 0);
 
-    assert_eq!(d.name, "test");
-    assert_eq!(d.id, 0);
-    assert!(d.children.unwrap().is_empty());
-    assert_eq!(d.position, Point3::<f64>::origin());
-    assert_eq!(d.rotation, Rotation3::<f64>::identity());
-    assert_eq!(d.vel_twist, Vector6::<f64>::zeros());
-    assert_eq!(d.acc_twist, Vector6::<f64>::zeros());
+    assert_eq!(d.borrow().name, "test");
+    assert_eq!(d.borrow().id, 0);
+    assert!(d.borrow().children.is_none());
+    assert_eq!(d.borrow().position, Point3::<f64>::origin());
+    assert_eq!(d.borrow().rotation, Rotation3::<f64>::identity());
+    assert_eq!(d.borrow().vel_twist, Vector6::<f64>::zeros());
+    assert_eq!(d.borrow().acc_twist, Vector6::<f64>::zeros());
   }
 
   #[test]
   fn test_add_child() {
-    let mut d = DaviTreeNode::new("test", 0);
-    let c = DaviTreeNode::new("child", 1);
-    d.add_child(c);
+    let d = DaviTreeNode::new("test", 0);
+    let mut d_mut = d.borrow_mut();
+    d_mut.add_child("child", 1);
 
-    match d.children {
+    match &d_mut.children {
       Some(children) => {
         if let Some(child) = children.get(0) {
-          assert_eq!(child.name, "child");
-          assert_eq!(child.id, 1);
+          assert_eq!(child.borrow().name, "child");
+          assert_eq!(child.borrow().id, 1);
         }else{
         }
       }
