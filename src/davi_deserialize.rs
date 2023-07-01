@@ -25,7 +25,7 @@ pub struct DaviDesNode {
 
 #[allow(dead_code)]
 // convert_to_davitree converts a DaviDesNode to a DaviTreeNode
-pub fn convert_to_davitree(s: DaviDesNode) -> Option<DaviTreeNode> {
+fn convert_to_davitree(s: DaviDesNode) -> Option<DaviTreeNode> {
   let children = match s.children {
     Some(child_nodes) => {
       let converted_children: Vec<Rc<RefCell<DaviTreeNode>>>
@@ -51,7 +51,7 @@ pub fn convert_to_davitree(s: DaviDesNode) -> Option<DaviTreeNode> {
 
 #[allow(dead_code)]
 // read_json_file reads a json file and returns a DaviDesNode
-pub fn read_json_file(path: &str) -> Result<DaviTreeNode, Error> {
+fn read_json_file(path: &str) -> Result<DaviTreeNode, Error> {
   let mut file = Err(File::open(path).expect("Unable to open file"));
   let mut contents = String::new();
   file.read_to_string(&mut contents).expect("Unable to read the file");
