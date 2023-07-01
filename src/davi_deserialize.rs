@@ -52,7 +52,7 @@ fn convert_to_davitree(s: DaviDesNode) -> Option<DaviTreeNode> {
 #[allow(dead_code)]
 // read_json_file reads a json file and returns a DaviDesNode
 fn read_json_file(path: &str) -> Result<DaviTreeNode, Error> {
-  let mut file = Err(File::open(path).expect("Unable to open file"));
+  let mut file = File::open(path).expect("Unable to open file");
   let mut contents = String::new();
   file.read_to_string(&mut contents).expect("Unable to read the file");
 
