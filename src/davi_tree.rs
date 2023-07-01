@@ -3,15 +3,15 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use nalgebra::{Point3, Rotation3, Vector6};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(dead_code)]
 pub struct DaviTreeNode {
   pub name: String,
   pub id: i32,
   pub children: Option<Vec<Rc<RefCell<DaviTreeNode>>>>,
 
-  pub position: Point3<f64>,
-  pub rotation: Rotation3<f64>,
+  pub rel_pos: Point3<f64>,
+  pub rel_rot: Rotation3<f64>,
 
   pub vel_twist: Vector6<f64>,
   pub acc_twist: Vector6<f64>,
@@ -24,8 +24,8 @@ impl DaviTreeNode {
       name: name.to_string(),
       id,
       children: None,
-      position: Point3::<f64>::origin(),
-      rotation: Rotation3::<f64>::identity(),
+      rel_pos: Point3::<f64>::origin(),
+      rel_rot: Rotation3::<f64>::identity(),
       vel_twist: Vector6::<f64>::zeros(),
       acc_twist: Vector6::<f64>::zeros()
     }))
@@ -97,8 +97,8 @@ mod tests {
     assert_eq!(d.borrow().name, "test");
     assert_eq!(d.borrow().id, 0);
     assert!(d.borrow().children.is_none());
-    assert_eq!(d.borrow().position, Point3::<f64>::origin());
-    assert_eq!(d.borrow().rotation, Rotation3::<f64>::identity());
+    assert_eq!(d.borrow().rel_pos, Point3::<f64>::origin());
+    assert_eq!(d.borrow().rel_rot, Rotation3::<f64>::identity());
     assert_eq!(d.borrow().vel_twist, Vector6::<f64>::zeros());
     assert_eq!(d.borrow().acc_twist, Vector6::<f64>::zeros());
   }
@@ -118,6 +118,7 @@ mod tests {
         }
       }
       None => {
+        assert!(false);
       }
     }
   }
