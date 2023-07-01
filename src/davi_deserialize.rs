@@ -56,8 +56,19 @@ fn read_json_file(path: &str) -> Result<DaviDesNode, serde_json::Error> {
   let mut contents = String::new();
   file.read_to_string(&mut contents).expect("Unable to read the file");
 
-  let des: DaviDesNode = serde_json::from_str(&contents)?;
-  Ok(des)
+  Ok(serde_json::from_str(&contents)?)
+}
+
+#[allow(dead_code)]
+// davi_deserialize deserializes a json file into a DaviTreeNode
+pub fn davi_deserialize(path: &str) -> Option<DaviTreeNode> {
+  match read_json_file(path) {
+    Ok(des) => convert_to_davitree(des),
+    Err(e) => {
+      println!("Error: {}", e);
+      None
+    }
+  }
 }
 
 #[cfg(test)]
@@ -118,6 +129,37 @@ mod tests {
         }
       },
       Err(e) => panic!("Failed to parse JSON: {}", e),
+    }
+  }
+
+  #[test]
+  // test_read_json_file tests the read_json_file function
+  fn test_davi_deserialize() {
+    let test_file_path = "./ext/sample.json";
+
+    match davi_deserialize(test_file_path) {
+      Some(tree) => {
+        assert_eq!(tree.name, "origin");
+        assert_eq!(tree.id, 0);
+        assert_eq!(tree.rel_pos, Point3::<f64>::origin());
+        assert_eq!(tree.rel_rot, Rotation3::<f64>::identity());
+        match tree.children {
+          Some(children) => {
+            if let Some(child) = children.get(0){
+              assert_eq!(child.borrow().name, "robot1");
+              assert!(child.borrow().children.is_none());
+            }
+            if let Some(child) = children.get(1){
+              assert_eq!(child.borrow().name, "robot2");
+              assert!(child.borrow().children.is_none());
+            }
+          },
+          None => {
+            assert!(false);
+          },
+        }
+      },
+      None => panic!("Failed to desiriealize JSON"),
     }
   }
 }
