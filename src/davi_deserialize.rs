@@ -48,6 +48,11 @@ pub fn convert_to_davitree(s: DaviDesNode) -> Option<DaviTreeNode> {
     acc_twist: Vector6::<f64>::zeros()
   })
 }
+
+#[allow(dead_code)]
+// read_json_file reads a json file and returns a DaviDesNode
+pub fn read_json_file(path: &str) -> Result<DaviTreeNode, Error> {
+  let mut file = Err(File::open(path).expect("Unable to open file"));
   let mut contents = String::new();
   file.read_to_string(&mut contents).expect("Unable to read the file");
 
@@ -85,6 +90,8 @@ mod tests {
     }
   }
 
+  #[test]
+  // test_read_json_file tests the read_json_file function
   fn test_read_json_file() {
     let test_file_path = "./ext/sample.json";
 
@@ -105,7 +112,9 @@ mod tests {
               assert!(child.children.is_none());
             }
           },
-          None => {},
+          None => {
+            assert!(false);
+          },
         }
       },
       Err(e) => panic!("Failed to parse JSON: {}", e),
