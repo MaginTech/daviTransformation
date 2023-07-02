@@ -19,6 +19,7 @@ pub struct DaviTreeNode {
 
 impl DaviTreeNode {
   #[allow(dead_code)]
+  // new creates a new DaviTreeNode
   pub fn new(name: &str, id: i32) -> Rc<RefCell<Self>> {
     Rc::new(RefCell::new(DaviTreeNode {
       name: name.to_string(),
@@ -32,6 +33,7 @@ impl DaviTreeNode {
   }
 
   #[allow(dead_code)]
+  // add_child adds a child to the DaviTreeNode
   fn add_child(&mut self, name: &str, id: i32) {
     let new_child = DaviTreeNode::new(name, id);
     match &mut self.children {
