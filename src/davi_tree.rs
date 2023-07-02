@@ -5,6 +5,7 @@ use nalgebra::{Point3, Rotation3, Vector6};
 
 #[derive(Debug, Clone)]
 #[allow(dead_code)]
+// DaviTreeNode is a node in the tree
 pub struct DaviTreeNode {
   pub name: String,
   pub id: i32,

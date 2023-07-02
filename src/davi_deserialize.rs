@@ -11,7 +11,8 @@ use serde::{Deserialize};
 use crate::davi_tree::*;
 
 #[derive(Debug, Clone, Deserialize)]
-#[allow(dead_code)]
+#[allow(dead_code)
+// DaviDesNode is a node in the deserialized tree
 pub struct DaviDesNode {
   name: String,
   id: i32,
